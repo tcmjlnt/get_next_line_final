@@ -6,7 +6,7 @@
 /*   By: tjacquel <tjacquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:04:15 by tjacquel          #+#    #+#             */
-/*   Updated: 2024/09/26 21:42:19 by tjacquel         ###   ########.fr       */
+/*   Updated: 2024/09/27 10:51:14 by tjacquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ char	*ft_extract_line(char *string)
 	//while (string[i] != '\0' && string[i] != '\n')
 	//	i++;
 	line = malloc((ft_strlen(string) + 2) * sizeof(char));
+	// j'hesite entre malloc (ft_strlen + 2) ou (i + 2)
+	// a priori c'est pas le meme chose mais les deux ont l'air de fonctionner
 	if (!line)
 		return (NULL);
 	i = 0;
@@ -62,7 +64,7 @@ char	*ft_extract_line(char *string)
 	if (string[i] == '\n')
 	{
 		line[i] = '\n';
-		i++;	
+		i++;
 	}
 	line[i] = '\0';
 	return (line);
