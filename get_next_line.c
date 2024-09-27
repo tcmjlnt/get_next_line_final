@@ -6,7 +6,7 @@
 /*   By: tjacquel <tjacquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:04:15 by tjacquel          #+#    #+#             */
-/*   Updated: 2024/09/27 13:48:18 by tjacquel         ###   ########.fr       */
+/*   Updated: 2024/09/27 16:49:08 by tjacquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,19 @@ char	*ft_read_line(int fd, char *string, char *buffer)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read == -1)
-		{
-			free(string);
-			return (NULL);
-		}
+			return (free(string), NULL);
 		if (bytes_read == 0)
 			break ;
 		buffer[bytes_read] = '\0';
 		if (string == NULL)
 			string = ft_strdup("");
+		if (string == NULL)
+			return (NULL);
 		tmp = string;
 		string = ft_strjoin(tmp, buffer);
-		free(tmp);
+		free (tmp);
+		if (!string)
+			return (NULL);
 		if (ft_strchr(buffer, '\n'))
 			break ;
 	}
@@ -82,7 +83,7 @@ char	*ft_update_stash(char *string)
 		free(string);
 		return (NULL);
 	}
-	new_stash = malloc((ft_strlen(string) - i + 1) * sizeof(char));
+	new_stash = malloc((ft_strlen(string) - i) * sizeof(char));
 	if (!new_stash)
 		return (NULL);
 	i++;
@@ -100,14 +101,11 @@ char	*get_next_line(int fd)
 	char		*line;
 	char		*buffer;
 
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
 		return (NULL);
-	if (fd < 0 || BUFFER_SIZE <= 0)
-	{
-		free(buffer);
-		return (NULL);
-	}
 	stash = ft_read_line(fd, stash, buffer);
 	free(buffer);
 	if (!stash)
