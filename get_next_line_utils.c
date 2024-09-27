@@ -6,7 +6,7 @@
 /*   By: tjacquel <tjacquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 15:49:14 by tjacquel          #+#    #+#             */
-/*   Updated: 2024/09/26 19:15:00 by tjacquel         ###   ########.fr       */
+/*   Updated: 2024/09/27 12:52:29 by tjacquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_strlen(const char *s)
 {
-	unsigned int	i;
+	int	i;
 
 	i = 0;
 	while (s[i])
@@ -24,9 +24,9 @@ int	ft_strlen(const char *s)
 
 char	*ft_strdup(const char *s)
 {
-	unsigned int	i;
-	unsigned int	s_len;
-	char			*dup;
+	int		i;
+	int		s_len;
+	char	*dup;
 
 	if (s == NULL)
 		return (NULL);

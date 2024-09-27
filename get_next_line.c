@@ -6,13 +6,11 @@
 /*   By: tjacquel <tjacquel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:04:15 by tjacquel          #+#    #+#             */
-/*   Updated: 2024/09/27 10:51:14 by tjacquel         ###   ########.fr       */
+/*   Updated: 2024/09/27 13:48:18 by tjacquel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
-
 
 char	*ft_read_line(int fd, char *string, char *buffer)
 {
@@ -28,6 +26,8 @@ char	*ft_read_line(int fd, char *string, char *buffer)
 			free(string);
 			return (NULL);
 		}
+		if (bytes_read == 0)
+			break ;
 		buffer[bytes_read] = '\0';
 		if (string == NULL)
 			string = ft_strdup("");
@@ -47,14 +47,15 @@ char	*ft_extract_line(char *string)
 
 	if (!string || !*string)
 		return (NULL);
-	//i = 0;
-	//while (string[i] != '\0' && string[i] != '\n')
-	//	i++;
-	line = malloc((ft_strlen(string) + 2) * sizeof(char));
-	// j'hesite entre malloc (ft_strlen + 2) ou (i + 2)
-	// a priori c'est pas le meme chose mais les deux ont l'air de fonctionner
+	i = 0;
+	while (string[i] != '\0' && string[i] != '\n')
+		i++;
+	line = malloc((i + 1 + (string[i] == '\n')) * sizeof(char));
 	if (!line)
+	{
+		free (string);
 		return (NULL);
+	}
 	i = 0;
 	while (string[i] != '\0' && string[i] != '\n')
 	{
@@ -62,10 +63,7 @@ char	*ft_extract_line(char *string)
 		i++;
 	}
 	if (string[i] == '\n')
-	{
-		line[i] = '\n';
-		i++;
-	}
+		line[i++] = '\n';
 	line[i] = '\0';
 	return (line);
 }
@@ -96,7 +94,6 @@ char	*ft_update_stash(char *string)
 	return (new_stash);
 }
 
-// Main function: Get the next line from the file descriptor
 char	*get_next_line(int fd)
 {
 	static char	*stash;
@@ -116,6 +113,12 @@ char	*get_next_line(int fd)
 	if (!stash)
 		return (NULL);
 	line = ft_extract_line(stash);
+	if (!line)
+	{
+		free(stash);
+		stash = NULL;
+		return (NULL);
+	}
 	stash = ft_update_stash(stash);
 	return (line);
 }
